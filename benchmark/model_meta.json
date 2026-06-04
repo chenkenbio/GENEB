@@ -1,0 +1,362 @@
+{
+  "agro-nucleotide-transformer-1b": {
+    "display": "agro-NT-1b",
+    "params": 1000000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "BioFM-265M": {
+    "display": "BioFM-265M",
+    "params": 265000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "caduceus-ph_seqlen-1k_d_model-256_n_layer-4_lr-8e-3": {
+    "display": "Caduceus-PH-1k-256",
+    "params": 1930000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "caduceus-ps_seqlen-131k_d_model-256_n_layer-16": {
+    "display": "Caduceus-PS-131k-256",
+    "params": 1930000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "deepgene": {
+    "display": "deepgene",
+    "params": 85000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "dna_gpt0.1b_h": {
+    "display": "dna_gpt0.1b_h",
+    "params": 100000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "dna_gpt3b_m": {
+    "display": "dna_gpt3b_m",
+    "params": 3000000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "DNABERT-S": {
+    "display": "DNABERT-S",
+    "params": 117070082,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "dnabert2-no-flashattention": {
+    "display": "dnabert2",
+    "params": 117000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "eccdnamamba_weights": {
+    "display": "eccdnamamba_weights",
+    "params": 1000000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "enformer-official-rough": {
+    "display": "enformer-official-rough",
+    "params": 250000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "evo-1-131k-base": {
+    "display": "evo-1-131k",
+    "params": 7000000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "gena-lm-bert-base": {
+    "display": "gena-lm-bert",
+    "params": 110000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "gena-lm-bert-base-t2t-multi": {
+    "display": "gena-lm-bert-t2t-multi",
+    "params": 110000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "gena-lm-bert-large-t2t": {
+    "display": "gena-lm-bert-large-t2t",
+    "params": 336000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "GENERator-eukaryote-1.2b-base": {
+    "display": "GENERator-eukaryote-1.2b",
+    "params": 1200000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "GENERator-eukaryote-3b-base": {
+    "display": "GENERator-eukaryote-3b",
+    "params": 3000000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "GenomeOcean-4B": {
+    "display": "GenomeOcean-4B",
+    "params": 4000000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "GenomeOcean-500M": {
+    "display": "GenomeOcean-500M",
+    "params": 500000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "genomics-fm": {
+    "display": "genomics-fm",
+    "params": 120000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "gpt2_gene_multi_v2_ft": {
+    "display": "gpt2_gene_multi_v2_ft",
+    "params": 200000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "gpt2_gene_v1": {
+    "display": "gpt2_gene_v1",
+    "params": 200000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "GROVER": {
+    "display": "GROVER",
+    "params": 87101793,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "hyenadna-large-1m-seqlen-hf": {
+    "display": "hyenadna-large-1m",
+    "params": 54600000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "hyenadna-medium-160k-seqlen-hf": {
+    "display": "hyenadna-medium-160k",
+    "params": 14200000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "JanusDNA_72_w": {
+    "display": "JanusDNA_72_w",
+    "params": 1980000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "JanusDNA_72_wo": {
+    "display": "JanusDNA_72_wo",
+    "params": 1980000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "LucaOne-default-step36M": {
+    "display": "LucaOne-default-step36M",
+    "params": 2000000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "METAGENE-1": {
+    "display": "METAGENE-1",
+    "params": 7000000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "MutBERT": {
+    "display": "MutBERT",
+    "params": 86000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "nucleotide-transformer-2.5b-multi-species": {
+    "display": "NT-2.5B-MS",
+    "params": 2500000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "nucleotide-transformer-v2-100m-multi-species": {
+    "display": "NT-v2-100m-MS",
+    "params": 100000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "nucleotide-transformer-v2-250m-multi-species": {
+    "display": "NT-v2-250m-MS",
+    "params": 250000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "nucleotide-transformer-v2-50m-3mer-multi-species": {
+    "display": "NT-v2-50m-3mer-MS",
+    "params": 50000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "nucleotide-transformer-v2-50m-multi-species": {
+    "display": "NT-v2-50m-MS",
+    "params": 50000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "Omni-DNA-1B": {
+    "display": "Omni-DNA-1B",
+    "params": 1000000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "Omni-DNA-300M": {
+    "display": "Omni-DNA-300M",
+    "params": 300000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "OmniNA-220m": {
+    "display": "OmniNA-220m",
+    "params": 220000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "PlantCaduceus_l32": {
+    "display": "PlantCaduceus_l32",
+    "params": 225000000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  },
+  "space": {
+    "display": "space",
+    "params": 588750000,
+    "url": "",
+    "zero_shot": false,
+    "training_data": "",
+    "provenance": "official",
+    "submitted_by": "DNA Survey authors"
+  }
+}
