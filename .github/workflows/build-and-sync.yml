@@ -2,7 +2,11 @@ name: Build & sync leaderboard
 on:
   push:
     branches: [main]
-    paths: ["submissions/**", "benchmark/**", "tools/build_leaderboard.py", "leaderboard/index.html"]
+    paths:
+      - "submissions/**"
+      - "benchmark/**"
+      - "tools/build_leaderboard.py"
+      - "leaderboard/**"
   workflow_dispatch:
 permissions:
   contents: write
