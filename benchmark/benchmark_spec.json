@@ -31,7 +31,7 @@
       1,
       10
     ],
-    "note": "Frozen embeddings -> linear probe. Identical train/test splits for every model; see dataset revision below."
+    "note": "Linear probe on precomputed embeddings. Identical train/test splits for every model; see dataset revision below."
   },
   "dataset": {
     "repo_id": "DeepPavlov/geneb-tasks",

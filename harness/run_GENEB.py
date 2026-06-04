@@ -1,27 +1,21 @@
 #!/usr/bin/env python3
 """
-GENEB runner — the ONE command a contributor runs.
+GENEB reference harness: run an extractor on the pinned task set and write a submission file.
 
-Give it your extractor (a class under harness/extractors/) and the pinned dataset, and it
-evaluates ALL 100 tasks in ALL 3 regimes with the benchmark's fixed seeds and probe
-settings, then writes a complete, validated  submissions/<model_id>.json  — ready to PR.
+Loads a class from harness/extractors/, embeds train/test sequences for each task, fits
+the protocol-defined logistic-regression probe (seeds and settings from benchmark_spec.json)
+in regimes full / 1shot / 10shot, and writes submissions/<model_id>.json.
 
-    python harness/run_GENEB.py \
-        --extractor  MyExtractor \
-        --module     my_model \
-        --name_model org/my-model \
-        --model_id   my-model-300m \
-        --display    "My Model 300M" \
-        --params     300000000 \
-        --url        https://huggingface.co/org/my-model \
-        --data_dir   ./GENEB_data \
-        --device     cuda \
-        --submitted_by "Your Name"
+Example:
 
-Dataset layout: one CSV per task, named exactly <task_id>.csv (see benchmark_spec.json),
-columns: text,label,split   (split in {train,test}).
+    python3 harness/run_GENEB.py \\
+        --extractor MyExtractor --module my_model \\
+        --name_model org/my-model \\
+        --model_id my-model-300m --display "My Model 300M" --params 300000000 \\
+        --url https://huggingface.co/org/my-model \\
+        --data_dir ./GENEB_data --device cuda --submitted_by "Your Name"
 
-You keep your weights and embeddings — nothing leaves your machine except the metrics file.
+Dataset: one CSV per task named <task_id>.csv; columns text, label, split (train|test).
 """
 import argparse, importlib, json, os, sys, csv
 import numpy as np

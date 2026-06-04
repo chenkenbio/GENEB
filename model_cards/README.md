@@ -1,10 +1,10 @@
 # Model cards
 
-Optional, human-readable disclosure pages — **one per model**, named `<model_id>.md`.
-They are for reviewers; **nothing here is parsed** and they do **not** affect the leaderboard
-(size, scores, and provenance all come from `meta` in the submission / `model_meta.json`).
+Optional disclosure documents (`model_cards/<model_id>.md`) for reviewers. They are not
+parsed by the leaderboard; scores and provenance come from `submissions/<model_id>.json`
+and `benchmark/model_meta.json`.
 
-When you submit a model, add `model_cards/<model_id>.md` with:
+Suggested sections:
 
 ```markdown
 # <model_id>
@@ -14,14 +14,14 @@ When you submit a model, add `model_cards/<model_id>.md` with:
 - **Architecture:**
 - **Weights / URL:**
 - **Tokenizer / input:**
-- **Pooling:** mean over tokens (or describe)
+- **Pooling:** (e.g. mean over tokens)
 
 ## Training data
-<what the model was pretrained on>
+<pretraining corpora and filtering>
 
 ## Disclosure
-- **Zero-shot?** no / yes — <explain>
-- **Train/test contamination with benchmark tasks?** none known / <describe any overlap>
-- **Harness version used:** GENEB-0.1.0
+- **Zero-shot relative to benchmark tasks:** 
+- **Known train/test overlap with benchmark data:** 
+- **Harness version:** GENEB-0.1.0
 - **Submitted by:**
 ```

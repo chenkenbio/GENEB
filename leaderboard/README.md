@@ -12,5 +12,9 @@ pinned: false
 
 Static leaderboard for the GENEB genomic embedding benchmark. Served files:
 `index.html`, `leaderboard.json` (13 task-type aggregates), `leaderboard_tasks.json`
-(100 per-task scores). These JSONs are built and synced automatically from the
-[source repo](https://github.com/DeepPavlov/geneb) on every merge — do not edit by hand.
+(100 per-task scores). JSON tables are regenerated from reviewed submissions in the
+[GENEB repository](https://github.com/DeepPavlov/geneb) when changes merge to `main`, then
+synced to this Space. Do not edit `leaderboard.json` or `leaderboard_tasks.json` here by hand.
+
+- **Space:** https://huggingface.co/spaces/DeepPavlov/geneb-leaderboard  
+- **Task data:** https://huggingface.co/datasets/DeepPavlov/geneb-tasks
