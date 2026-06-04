@@ -1,0 +1,15 @@
+name: Validate submissions
+on:
+  pull_request:
+    paths: ["submissions/**", "benchmark/**", "tools/**"]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      # schema / completeness / range checks — no scoring, just structure
+      - run: python tools/validate_submission.py
+      # make sure the leaderboard still builds from the submissions
+      - run: python tools/build_leaderboard.py
