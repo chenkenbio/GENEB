@@ -1,26 +1,34 @@
 # Contributing results to GENEB
 
+Paper: https://arxiv.org/abs/2606.04525  
 Repository: https://github.com/DeepPavlov/geneb  
-Task data (pinned): https://huggingface.co/datasets/DeepPavlov/geneb-tasks  
+Task data: https://huggingface.co/datasets/DeepPavlov/geneb-tasks  
 Leaderboard: https://huggingface.co/spaces/DeepPavlov/geneb-leaderboard
 
-To add a model, implement an embedding extractor, run the reference harness on the pinned
-task data, and open a pull request with the resulting submission file, extractor module, and
-a short model card. Evaluation runs on your hardware; weights and embeddings remain local.
+To add a model to the GENEB leaderboard, you need to provide three things:
 
-Community entries are marked `self-reported` in submission metadata after review.
+1. an embedding extractor that loads your model and converts DNA sequences into fixed-size
+   embeddings;
+2. a submission file produced by the GENEB harness;
+3. a short model card describing the model and its training data.
+
+Evaluation runs on your hardware. Model weights and intermediate embeddings remain local;
+the pull request only needs the extractor code, the final metrics, and the model card.
+
+Community entries are marked as `self-reported` in submission metadata after review.
 
 ---
 
 ## Quick start
 
 ```bash
-# 1. Implement harness/extractors/<module>.py (subclass BaseEmbeddingExtractor)
-# 2. Download pinned task CSVs
+# 1. Implement harness/extractors/<module>.py by subclassing BaseEmbeddingExtractor.
+
+# 2. Download the GENEB task data revision specified in benchmark/benchmark_spec.json.
 python3 -m pip install "huggingface_hub>=0.24"
 python3 tools/sync_geneb_dataset.py download --local_dir ./GENEB_data
 
-# 3. Run the harness (example)
+# 3. Run the harness locally.
 python3 harness/run_GENEB.py \
   --extractor MyModelExtractor --module my_model \
   --name_model org/my-model \
@@ -28,10 +36,15 @@ python3 harness/run_GENEB.py \
   --url https://huggingface.co/org/my-model \
   --data_dir ./GENEB_data --device cuda --submitted_by "Your Name"
 
-# 4. Validate and open a PR with:
-#    submissions/<model_id>.json, harness/extractors/<module>.py, model_cards/<model_id>.md
+# 4. Validate the produced submission file.
 python3 tools/validate_submission.py submissions/my-model-300m.json
 ```
+
+Then open a pull request containing:
+
+- `submissions/<model_id>.json`
+- `harness/extractors/<module>.py`
+- `model_cards/<model_id>.md`
 
 Use `--limit N` to evaluate the first *N* tasks before a full benchmark run.
 
@@ -56,9 +69,10 @@ class MyModelExtractor(BaseEmbeddingExtractor):
         ...
 ```
 
-The repository includes reference extractors only where needed for testing; production
-models are added through contributions. Publishing the extractor alongside your
-submission enables independent reproduction of your reported metrics.
+Extractor modules are lightweight wrappers around existing models: they load the encoder,
+prepare DNA sequences, compute hidden states, apply the chosen pooling strategy, and return
+one embedding vector per sequence. The extractor should not perform task-specific training
+or use GENEB labels directly.
 
 ---
 
@@ -113,31 +127,34 @@ pretraining data and benchmark tasks.
 
 ## 5. Pull request
 
-Required files:
+A pull request for a new model should include:
 
-- `submissions/<model_id>.json`
-- `harness/extractors/<module>.py`
-- `model_cards/<model_id>.md`
+- `submissions/<model_id>.json` — metrics produced by the harness;
+- `harness/extractors/<module>.py` — code used to compute embeddings;
+- `model_cards/<model_id>.md` — model description and training-data notes.
 
-CI runs `validate_submission.py` and rebuilds leaderboard JSON in dry-run. After merge to
-`main`, the public Space is updated automatically (requires repository secrets).
+CI validates the submission format and checks that leaderboard generation succeeds. After
+the pull request is merged into `main`, the public Hugging Face Space is updated
+automatically.
 
 ---
 
 ## What CI verifies
 
-- Valid JSON and filename ↔ `model_id` consistency  
-- All 100 tasks present in each regime (`full`, `1shot`, `10shot`)  
-- Metrics within valid ranges  
-- Leaderboard build succeeds  
+CI checks:
 
-CI does **not** recompute embeddings or retrain probes on maintainer infrastructure.
+- valid JSON and filename ↔ `model_id` consistency;
+- presence of all 100 tasks in each regime (`full`, `1shot`, `10shot`);
+- metric values within valid ranges;
+- successful leaderboard rebuild.
+
+CI does **not** recompute embeddings, retrain probes, or download third-party model weights.
 
 ---
 
 ## Protocol summary
 
-- Use the pinned dataset revision and harness settings from `benchmark_spec.json`.  
+- Use the pinned dataset revision and harness settings from `benchmark_spec.json`.
 - Do not train on the test split or perform encoder fine-tuning on task labels beyond the
-  defined linear probe.  
-- One submission file per model; one pull request per model is easiest to review.  
+  defined linear probe.
+- One submission file per model; one pull request per model is easiest to review.
