@@ -1,0 +1,43 @@
+name: Build & sync leaderboard
+on:
+  push:
+    branches: [main]
+    paths: ["submissions/**", "benchmark/**", "tools/build_leaderboard.py", "leaderboard/index.html"]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+
+      - name: Rebuild leaderboard JSON from submissions
+        run: python tools/build_leaderboard.py
+
+      - name: Commit rebuilt files
+        run: |
+          git config user.name  "geneb-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add leaderboard/leaderboard.json leaderboard/leaderboard_tasks.json
+          git commit -m "build: refresh leaderboard [skip ci]" || echo "nothing to commit"
+          git push
+
+      - name: Sync to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}     # add this secret: an HF write token
+          SPACE_ID: DeepPavlov/geneb-leaderboard
+        run: |
+          pip install --quiet "huggingface_hub>=0.24"
+          python - <<'PY'
+          import os
+          from huggingface_hub import HfApi
+          api = HfApi(token=os.environ["HF_TOKEN"])
+          sid = os.environ["SPACE_ID"]
+          for f in ["index.html", "leaderboard.json", "leaderboard_tasks.json", "README.md"]:
+              api.upload_file(path_or_fileobj=f"leaderboard/{f}", path_in_repo=f,
+                              repo_id=sid, repo_type="space")
+          print("synced ->", sid)
+          PY
