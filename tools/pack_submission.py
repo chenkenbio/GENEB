@@ -71,7 +71,7 @@ def main():
         for hk, mk in MKEY.items():
             if hk not in raw or "mean" not in raw[hk]:
                 print(f"  ! {f}: missing {hk}.mean"); continue
-            row[mk] = round(float(raw[hk]["mean"]), 4)
+            row[mk] = float(raw[hk]["mean"])
         results[reg][tid] = row
         seen[reg].add(tid)
 

@@ -37,7 +37,6 @@ if "n_jobs" in LOGREG:
     LOGREG_KW["n_jobs"] = LOGREG["n_jobs"]
 KSHOTS   = SPEC["protocol"]["few_shot_k"]       # [1,10]
 K_TO_REG = {1: "1shot", 10: "10shot"}
-R4 = lambda x: round(float(x), 4)
 
 
 def load_extractor(module, cls, name_model, device):
@@ -72,7 +71,7 @@ def fit_eval(Xtr, ytr, Xte, yte, idx=None):
         clf = LogisticRegression(**LOGREG_KW, random_state=seed).fit(xs, ys)
         m, a, f = metrics(yte, clf.predict(Xte))
         mc.append(m); ac.append(a); f1.append(f)
-    return {"MCC": R4(np.mean(mc)), "Acc": R4(np.mean(ac)), "F1": R4(np.mean(f1))}
+    return {"MCC": float(np.mean(mc)), "Acc": float(np.mean(ac)), "F1": float(np.mean(f1))}
 
 
 def few_shot_idx(ytr, k):
