@@ -1,23 +1,11 @@
 #!/usr/bin/env python3
 """
-Smoke tests for GENEB harness + dataset layout.
+Development checks for the GENEB harness and pinned dataset layout.
 
-  # 1) Compare two local data dirs (e.g. HF download vs ground-truth copy)
-  python3 tools/smoke_test_geneb.py compare-dirs \\
-      --a ./GENEB_data --b ./GENEB_data_real
-
-  # 2) Download pinned HF data, then compare to reference dir
-  python3 tools/smoke_test_geneb.py compare-hf \\
-      --reference ./GENEB_data_real --local_dir ./GENEB_data
-
-  # 3) Run k-mer extractor on a few tasks (end-to-end harness)
-  python3 tools/smoke_test_geneb.py run-kmer \\
-      --data_dir ./GENEB_data_real --limit 3
-
-  # 4) Compare new run to old embedding_pipeline JSON outputs
-  python3 tools/smoke_test_geneb.py compare-results \\
-      --submission submissions/geneb-kmer-smoke.json \\
-      --raw_dir /path/to/old/results --tolerance 1e-3
+  compare-dirs   — match train/test row counts between two local trees
+  compare-hf     — download pinned HF revision and compare to a reference dir
+  run-kmer       — short end-to-end run with the reference k-mer extractor
+  compare-results — compare submission JSON to legacy per-task results_*.json means
 """
 from __future__ import annotations
 
@@ -124,7 +112,7 @@ def _task_of(fname: str, task_set: set[str]) -> str | None:
 
 
 def compare_results(submission: str, raw_dir: str, tolerance: float) -> int:
-    """Compare submission JSON to embedding_pipeline results_*.json means."""
+    """Compare submission JSON means to legacy results_*.json per task and regime."""
     import glob
 
     spec = load_spec()
@@ -209,7 +197,7 @@ def main():
                     cwd=ROOT,
                 )
             else:
-                print(f"(skipped full validate: --limit {args.limit}; OK for smoke test)")
+                print(f"(skipped validate_submission: subset run, limit={args.limit})")
         sys.exit(rc)
     if args.cmd == "compare-results":
         sys.exit(compare_results(args.submission, args.raw_dir, args.tolerance))

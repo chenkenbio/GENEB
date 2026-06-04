@@ -449,7 +449,7 @@ def cmd_download(args):
         if os.path.isdir(tasks_root):
             merge_hf_tasks_to_flat(cache, flat_dir, spec)
         else:
-            # legacy flat layout
+            # fallback: flat <task_id>.csv at dataset repo root (legacy layout)
             for tid in task_ids(spec):
                 src = os.path.join(cache, tid + ".csv")
                 if os.path.isfile(src):

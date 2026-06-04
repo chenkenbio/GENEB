@@ -24,7 +24,7 @@ from sklearn.metrics import accuracy_score, f1_score, matthews_corrcoef
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
-sys.path.insert(0, HERE)                       # so `extractors.<module>` imports work
+sys.path.insert(0, HERE)  # allow `import extractors.<module>`
 SPEC = json.load(open(os.path.join(ROOT, "benchmark", "benchmark_spec.json")))
 
 TASKS    = [t["id"] for t in SPEC["tasks"]]
@@ -110,10 +110,11 @@ def main():
     ap.add_argument("--submitted_by", default="")
     ap.add_argument("--training_data", default="")
     ap.add_argument("--zero_shot", action="store_true")
-    ap.add_argument("--limit", type=int, default=0, help="run only the first N tasks (testing)")
+    ap.add_argument("--limit", type=int, default=0,
+                    help="evaluate only the first N tasks (subset run)")
     a = ap.parse_args()
 
-    # check the dataset has every task before spending GPU time
+    # require a complete local task set before embedding extraction
     present = {t for t in TASKS if os.path.exists(os.path.join(a.data_dir, t + ".csv"))}
     missing = set(TASKS) - present
     todo = (TASKS[:a.limit] if a.limit else TASKS)
@@ -148,10 +149,10 @@ def main():
     json.dump(sub, open(out, "w"), ensure_ascii=False, separators=(",", ":"))
     print(f"\nwrote {out}")
     if a.limit:
-        print(f"(partial: {a.limit} tasks — for testing only; a real submission needs all {len(TASKS)})")
+        print(f"(subset run: {a.limit}/{len(TASKS)} tasks; full benchmark requires all tasks)")
     else:
-        print("validate it:  python tools/validate_submission.py " + os.path.relpath(out, ROOT))
-        print("then open a PR adding that file + harness/extractors/%s.py + model_cards/%s.md"
+        print("validate: python tools/validate_submission.py " + os.path.relpath(out, ROOT))
+        print("submit: submissions file, harness/extractors/%s.py, model_cards/%s.md"
               % (a.module, a.model_id))
 
 

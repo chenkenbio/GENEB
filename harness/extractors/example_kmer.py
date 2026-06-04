@@ -1,4 +1,4 @@
-"""Simple 4-mer count embeddings (CPU baseline for smoke tests)."""
+"""Reference 4-mer count embeddings (CPU baseline for regression checks)."""
 from __future__ import annotations
 
 import numpy as np
@@ -20,7 +20,7 @@ def _kmer_index(kmer: str) -> int | None:
 
 
 class ExampleKmerExtractor(BaseEmbeddingExtractor):
-    """Normalized 4-mer frequency vectors — fast, no GPU, deterministic."""
+    """L1-normalized 4-mer frequency vectors (CPU-only, deterministic)."""
 
     def __init__(self, name_model: str = "kmer-4", device: str = "cpu"):
         self.name_model = name_model

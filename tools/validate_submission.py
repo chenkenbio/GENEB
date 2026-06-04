@@ -5,8 +5,7 @@ Validate one or more submission files against the benchmark spec. Used by CI on 
     python tools/validate_submission.py                      # validate all submissions/*.json
     python tools/validate_submission.py submissions/Foo.json # validate one
 
-Exits non-zero (and prints every problem) if anything is wrong. No scoring happens here —
-we only check that a self-reported submission is well-formed and complete.
+Exits non-zero on failure. Schema and completeness checks only; metrics are not recomputed.
 """
 import json, sys, os, glob, re
 

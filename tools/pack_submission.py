@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Turn the raw output of the harness into a single, reviewable submission file.
+Pack legacy per-task harness logs into a single submission file.
 
-The harness (embedding_pipeline/) writes one file per task per regime:
+Earlier runs may emit one JSON file per task and regime:
     results_<modelstem>_<task_id>_<extractor>.json          (full-shot)
     results_<modelstem>_<task_id>_<extractor>_k-1.json       (1-shot)
     results_<modelstem>_<task_id>_<extractor>_k-10.json      (10-shot)
@@ -20,8 +20,7 @@ mapping names to the benchmark's canonical task ids / regimes / metrics.
         --submitted_by "Jane Doe" \
         [--zero_shot] [--training_data "human GRCh38 + ..."]
 
-Then open a PR adding submissions/<model_id>.json (+ extractors/<module>.py and
-model_cards/<model_id>.md). You never share embeddings or get re-scored.
+Validate with tools/validate_submission.py before opening a pull request.
 """
 import argparse, json, os, re, glob
 
@@ -30,7 +29,7 @@ SPEC = json.load(open(os.path.join(ROOT, "benchmark", "benchmark_spec.json")))
 TASK_IDS = [t["id"] for t in SPEC["tasks"]]
 TASK_SET = set(TASK_IDS)
 SAFE = re.compile(r"[^A-Za-z0-9._-]")
-# harness metric key -> leaderboard metric key
+# raw JSON field -> submission metric key
 MKEY = {"mcc": "MCC", "accuracy": "Acc", "f1_score": "F1"}
 
 
@@ -97,7 +96,8 @@ def main():
     out = os.path.join(ROOT, "submissions", SAFE.sub("_", a.model_id) + ".json")
     json.dump(sub, open(out, "w"), ensure_ascii=False, separators=(",", ":"))
     print(f"wrote {out}")
-    print("next: `python tools/validate_submission.py {}` then open a PR.".format(out))
+    print("validate: python tools/validate_submission.py {}".format(
+        os.path.relpath(out, ROOT)))
 
 
 if __name__ == "__main__":

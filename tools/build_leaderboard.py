@@ -6,7 +6,7 @@ Build the two leaderboard files the HF Space serves, from the reviewed submissio
         -> leaderboard/leaderboard.json        (13 task-type aggregates)
         -> leaderboard/leaderboard_tasks.json  (100 per-task scores)
 
-No model is ever re-scored here. We only aggregate the metrics contributors submitted.
+Aggregates metrics from reviewed submissions; does not run the evaluation harness.
 Macro = mean of the 13 category means (each weighs 1/13).
 Micro = mean over all 100 tasks.
 """
