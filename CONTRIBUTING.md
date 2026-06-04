@@ -33,7 +33,7 @@ python3 harness/run_GENEB.py \
 python3 tools/validate_submission.py submissions/my-model-300m.json
 ```
 
-Use `--limit N` for a smoke test on the first *N* tasks before a full run.
+Use `--limit N` to evaluate the first *N* tasks before a full benchmark run.
 
 ---
 

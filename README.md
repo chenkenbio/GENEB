@@ -52,7 +52,7 @@ harness/
   run_GENEB.py              # end-to-end local evaluation → submission JSON
   extractors/
     base.py                 # extractor interface
-    <module>.py             # contributor-provided embedding implementation
+    <module>.py             # model-specific embedding module (per submission)
 .github/workflows/
   validate.yml              # PR checks on submissions and spec
   build-and-sync.yml        # rebuild leaderboard and push to the Space (on merge to main)
