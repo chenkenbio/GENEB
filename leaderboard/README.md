@@ -2,10 +2,13 @@
 title: GENEB Leaderboard
 emoji: 🧬
 colorFrom: pink
-colorTo: yellow
+colorTo: green
 sdk: static
 app_file: index.html
-pinned: false
+pinned: true
+tags:
+  - leaderboard
+  - benchmark
 ---
 
 # GENEB Leaderboard
