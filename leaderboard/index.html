@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GENEB Leaderboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://huggingface.co" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f7f4ec;--card:#fffdf8;--ink:#1c1f1b;--dim:#7b7a70;--line:#e4ded0;--mag:#ff2d87;--mag-soft:#ffe1ee}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--paper);color:var(--ink);font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  background-image:radial-gradient(1100px 600px at 88% -8%,rgba(255,45,135,.06),transparent 60%);min-height:100vh;padding:42px 22px 90px}
+.wrap{max-width:1400px;margin:0 auto}
+header{position:relative;padding-bottom:22px;margin-bottom:24px}
+header::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:3px;background:repeating-linear-gradient(90deg,var(--mag) 0 16px,transparent 16px 26px)}
+.kicker{font-family:"Bricolage Grotesque";font-weight:700;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--mag);margin-bottom:10px}
+h1{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(44px,8vw,92px);line-height:.9;letter-spacing:-.03em}
+h1 span{position:relative}
+h1 span::after{content:"";position:absolute;left:-2px;right:-2px;bottom:.08em;height:.34em;background:var(--mag-soft);z-index:-1;border-radius:2px}
+.tag-lb{font-family:"Bricolage Grotesque";font-weight:700;font-size:14px;letter-spacing:.46em;text-transform:uppercase;color:var(--dim);margin-top:8px;padding-left:3px}
+.sub{color:var(--dim);max-width:720px;margin-top:16px;font-size:13.5px;line-height:1.65}
+.sub b.g{color:#1a9850}.sub b.m{color:var(--mag)}
+.controls{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-end;margin:30px 0 16px}
+.ctl-label{font-family:"Bricolage Grotesque";font-weight:700;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.seg{display:inline-flex;border:1.5px solid var(--ink);border-radius:3px;overflow:hidden}
+.seg button{background:transparent;color:var(--ink);border:0;font-family:"Bricolage Grotesque";font-weight:700;font-size:12px;padding:9px 15px;cursor:pointer;letter-spacing:.03em;transition:.12s}
+.seg button:hover{background:#ece6d8}
+.seg button.on{background:var(--ink);color:var(--paper)}
+.seg button.on.mag{background:var(--mag);border-color:var(--mag)}
+.search{flex:1;min-width:180px}
+.search input{width:100%;background:var(--card);border:1.5px solid var(--line);color:var(--ink);font:inherit;font-size:13px;padding:10px 12px;border-radius:3px;outline:none}
+.search input:focus{border-color:var(--mag)}
+.meta{font-size:11px;color:var(--dim);margin-bottom:10px;font-family:"Bricolage Grotesque";font-weight:500;min-height:14px}
+.tabs{display:flex;gap:0;margin:6px 0 14px;border-bottom:2px solid var(--line)}
+.tabs button{background:transparent;border:0;border-bottom:2px solid transparent;margin-bottom:-2px;font-family:"Bricolage Grotesque";font-weight:700;font-size:13px;letter-spacing:.02em;color:var(--dim);padding:9px 16px 11px;cursor:pointer;transition:.12s}
+.tabs button:hover{color:var(--ink)}
+.tabs button.on{color:var(--mag);border-bottom-color:var(--mag)}
+.tablewrap{border:1.5px solid var(--ink);border-radius:5px;overflow-x:auto;background:var(--card);box-shadow:6px 6px 0 rgba(28,31,27,.08)}
+table{table-layout:fixed;border-collapse:separate;border-spacing:0;font-size:12px;width:max-content;min-width:100%}
+/* ---- header (kept dark) ---- */
+th{position:sticky;top:0;z-index:3;background:var(--ink);color:var(--paper);text-align:right;padding:13px 10px;font-family:"Bricolage Grotesque";font-weight:700;font-size:10px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;white-space:nowrap;user-select:none}
+th:hover{color:var(--mag)}
+th.l,td.l{text-align:left}
+th .ar{color:var(--mag);margin-left:3px}
+th .n{display:block;font-size:8px;color:#ffc8df;font-weight:500;letter-spacing:.03em;margin-top:2px}
+/* ---- body cells ---- */
+td{padding:3px;text-align:right;white-space:nowrap;background:var(--card)}
+/* equal-width score columns (Macro, Micro, all 13 categories) */
+th:not(.frz){width:120px;text-align:center;white-space:normal;overflow-wrap:anywhere;vertical-align:middle;line-height:1.2}
+td:not(.frz){width:120px;text-align:center}
+/* heatmap tiles */
+.cell{display:block;padding:10px 8px;border-radius:6px;font-variant-numeric:tabular-nums;font-weight:600;letter-spacing:.01em;transition:transform .1s,box-shadow .1s}
+td:hover .cell{transform:scale(1.12);box-shadow:0 3px 10px rgba(28,31,27,.28);position:relative;z-index:1}
+/* ---- frozen left columns (Rank / Model / Params) ---- */
+.frz{position:sticky;z-index:2;background:var(--card)}
+th.frz{z-index:4;background:var(--ink)}
+td.rank,th[data-k=rank]{left:0;width:44px}
+td.model,th[data-k=disp]{left:var(--l1,44px);width:222px}
+td.params,th[data-k=params]{left:var(--l2,266px);width:80px}
+td.prov,th[data-k=prov]{left:var(--l3,346px);width:108px}
+/* divider + shadow that signals "more columns to the right" — on the LAST frozen column (Source) */
+td.prov,th[data-k=prov]{box-shadow:8px 0 10px -8px rgba(28,31,27,.30)}
+td.prov{border-right:1.5px solid var(--ink);padding:11px 12px}
+th[data-k=prov]{border-right:1.5px solid #34392f}
+.badge{display:inline-flex;align-items:center;gap:6px;font-family:"Bricolage Grotesque";font-weight:700;font-size:10.5px;letter-spacing:.02em;color:var(--ink);white-space:nowrap}
+.bdot{width:8px;height:8px;border-radius:50%;flex:0 0 8px;outline:1.5px solid rgba(0,0,0,.12)}
+td.rank{color:var(--dim);padding:11px 10px;font-variant-numeric:tabular-nums;font-size:12px}
+td.model{padding:11px 12px;font-size:12.5px}
+.model b{font-weight:700;letter-spacing:-.01em}
+td.params{padding:11px 12px;font-variant-numeric:tabular-nums;color:var(--ink);font-weight:700}
+td.params i{font-style:normal;color:var(--mag);font-size:10px;margin-left:1px}
+.hdr .cell{font-weight:800}
+/* row separators (subtle, only under frozen text cells so tiles stay clean) */
+td.frz{border-bottom:1px solid var(--line)}
+tbody tr:last-child td.frz{border-bottom:0}
+tbody tr:hover td.frz{background:#f1ebdc}
+tbody tr:hover td.model{color:var(--mag)}
+/* rank 1 */
+tr.top1 td.frz{background:var(--mag-soft)}
+tr.top1 td.model{box-shadow:inset 4px 0 0 var(--mag)}
+tr.top1 td.rank{color:var(--mag);font-weight:700}
+.medal{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;vertical-align:middle;outline:1.5px solid rgba(0,0,0,.15)}
+footer{margin-top:22px;font-size:11px;color:var(--dim);line-height:1.7}
+footer b{color:var(--ink)}
+.bar{display:flex;align-items:center;gap:10px;margin-top:12px;font-family:"Bricolage Grotesque";font-weight:500;font-size:10px;letter-spacing:.05em;text-transform:uppercase;flex-wrap:wrap}
+.grad{height:12px;width:240px;border-radius:2px;border:1px solid var(--ink);background:linear-gradient(90deg,#a50026,#d73027,#f46d43,#fdae61,#fee08b,#d9ef8b,#a6d96a,#66bd63,#1a9850)}
+.status{padding:40px 12px;text-align:center;font-family:"Bricolage Grotesque";font-weight:700;color:var(--dim);font-size:14px}
+.status.err{color:var(--mag)}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid var(--line);border-top-color:var(--mag);border-radius:50%;animation:s 0.7s linear infinite;vertical-align:-2px;margin-right:8px}
+@keyframes s{to{transform:rotate(360deg)}}
+.src{font-size:10px;color:var(--dim);margin-top:6px}
+.src a{color:var(--mag)}
+</style></head>
+<body><div class="wrap">
+<header>
+  <div class="kicker">Genomic Embedding Benchmark // 40 models · 100 tasks · 13 categories</div>
+  <h1>GEN<span>EB</span></h1>
+  <div class="tag-lb">Leaderboard</div>
+  <p class="sub"><b class="m">Macro</b> = mean of 13 category scores (each weighs 1/13). <b class="m">Micro</b> = mean over all 100 tasks. Every score cell is heat-shaded on one <b class="g">red→yellow→green</b> scale, like the benchmark heatmap.</p>
+</header>
+<div class="controls">
+  <div><div class="ctl-label">Training regime</div>
+    <div class="seg" id="regime"><button data-v="full" class="on mag">Full-shot</button><button data-v="10shot">10-shot</button><button data-v="1shot">1-shot</button></div></div>
+  <div><div class="ctl-label">Metric</div>
+    <div class="seg" id="metric"><button data-v="MCC" class="on">MCC</button><button data-v="Acc">Accuracy</button><button data-v="F1">F1-macro</button></div></div>
+  <div><div class="ctl-label">Model size</div>
+    <div class="seg" id="size"><button data-v="all" class="on">All</button><button data-v="s">&lt;100M</button><button data-v="m">100M&ndash;1B</button><button data-v="l">&gt;1B</button></div></div>
+  <div class="search"><div class="ctl-label">Filter models</div><input id="q" placeholder="GENERator, NT, caduceus..."></div>
+</div>
+<div class="tabs" id="tabs">
+  <button data-m="type" class="on">Performance per task type</button>
+  <button data-m="task">Performance per task</button>
+</div>
+<div class="meta" id="meta"></div>
+<div class="tablewrap"><div id="status" class="status"><span class="spin"></span>Loading results from Hugging Face…</div>
+<table id="tbl" style="display:none"><thead><tr id="head"></tr></thead><tbody id="body"></tbody></table></div>
+<footer>
+  <b>Macro</b> rewards even performance across task types; <b>Micro</b> is dominated by the largest pools (Histone 30 + Promoters 22 = 52% of tasks). <b>Params</b> bins: &lt;100M / 100M&ndash;1B / &gt;1B. Click any header to sort.
+  <div class="bar"><span>low</span><div class="grad"></div><span>high</span><span style="color:var(--mag);margin-left:16px">&#9632; rank 1</span></div>
+  <div class="bar"><span style="color:var(--ink)">Source</span><span class="bdot" style="background:#ff2d87"></span>Official = scored by us<span class="bdot" style="background:#1a9850;margin-left:10px"></span>Verified = recomputed from submitted embeddings<span class="bdot" style="background:#9a948a;margin-left:10px"></span>Self-rep. = contributor-reported</div>
+  <div class="src">Data: <a id="srclink" href="https://huggingface.co/datasets/DeepPavlov/geneb-results/resolve/main/leaderboard.json" target="_blank">DeepPavlov/geneb-results</a> · updates to the dataset appear here automatically.</div>
+</footer>
+</div>
+<script>
+const DATA_URL="./leaderboard.json";  // local file in the Space, synced hourly from the source repo
+const META={"BioFM-265M": {"disp": "BioFM-265M", "params": 265000000}, "DNABERT-S": {"disp": "DNABERT-S", "params": 117070082}, "GENERator-eukaryote-1.2b-base": {"disp": "GENERator-eukaryote-1.2b", "params": 1200000000}, "GENERator-eukaryote-3b-base": {"disp": "GENERator-eukaryote-3b", "params": 3000000000}, "GROVER": {"disp": "GROVER", "params": 87101793}, "GenomeOcean-4B": {"disp": "GenomeOcean-4B", "params": 4000000000}, "GenomeOcean-500M": {"disp": "GenomeOcean-500M", "params": 500000000}, "JanusDNA_72_w": {"disp": "JanusDNA_72_w", "params": 1980000}, "JanusDNA_72_wo": {"disp": "JanusDNA_72_wo", "params": 1980000}, "LucaOne-default-step36M": {"disp": "LucaOne-default-step36M", "params": 2000000000}, "METAGENE-1": {"disp": "METAGENE-1", "params": 7000000000}, "MutBERT": {"disp": "MutBERT", "params": 86000000}, "Omni-DNA-1B": {"disp": "Omni-DNA-1B", "params": 1000000000}, "Omni-DNA-300M": {"disp": "Omni-DNA-300M", "params": 300000000}, "OmniNA-220m": {"disp": "OmniNA-220m", "params": 220000000}, "PlantCaduceus_l32": {"disp": "PlantCaduceus_l32", "params": 225000000}, "agro-nucleotide-transformer-1b": {"disp": "agro-NT-1b", "params": 1000000000}, "caduceus-ph_seqlen-1k_d_model-256_n_layer-4_lr-8e-3": {"disp": "Caduceus-PH-1k-256", "params": 1930000}, "caduceus-ps_seqlen-131k_d_model-256_n_layer-16": {"disp": "Caduceus-PS-131k-256", "params": 1930000}, "deepgene": {"disp": "deepgene", "params": 85000000}, "dna_gpt0.1b_h": {"disp": "dna_gpt0.1b_h", "params": 100000000}, "dna_gpt3b_m": {"disp": "dna_gpt3b_m", "params": 3000000000}, "dnabert2-no-flashattention": {"disp": "dnabert2", "params": 117000000}, "eccdnamamba_weights": {"disp": "eccdnamamba_weights", "params": 1000000000}, "enformer-official-rough": {"disp": "enformer-official-rough", "params": 250000000}, "evo-1-131k-base": {"disp": "evo-1-131k", "params": 7000000000}, "gena-lm-bert-base-t2t-multi": {"disp": "gena-lm-bert-t2t-multi", "params": 110000000}, "gena-lm-bert-base": {"disp": "gena-lm-bert", "params": 110000000}, "gena-lm-bert-large-t2t": {"disp": "gena-lm-bert-large-t2t", "params": 336000000}, "genomics-fm": {"disp": "genomics-fm", "params": 120000000}, "gpt2_gene_multi_v2_ft": {"disp": "gpt2_gene_multi_v2_ft", "params": 200000000}, "gpt2_gene_v1": {"disp": "gpt2_gene_v1", "params": 200000000}, "hyenadna-large-1m-seqlen-hf": {"disp": "hyenadna-large-1m", "params": 54600000}, "hyenadna-medium-160k-seqlen-hf": {"disp": "hyenadna-medium-160k", "params": 14200000}, "nucleotide-transformer-2.5b-multi-species": {"disp": "NT-2.5B-MS", "params": 2500000000}, "nucleotide-transformer-v2-100m-multi-species": {"disp": "NT-v2-100m-MS", "params": 100000000}, "nucleotide-transformer-v2-250m-multi-species": {"disp": "NT-v2-250m-MS", "params": 250000000}, "nucleotide-transformer-v2-50m-3mer-multi-species": {"disp": "NT-v2-50m-3mer-MS", "params": 50000000}, "nucleotide-transformer-v2-50m-multi-species": {"disp": "NT-v2-50m-MS", "params": 50000000}, "space": {"disp": "space", "params": 588750000}};
+const NCAT={"Histone Mod.": 30, "Promoters": 22, "Enhancers": 8, "DNA Methyl.": 8, "Splice Sites": 7, "lncRNA": 6, "Mouse Enh.": 5, "TF Binding": 5, "Species Clf.": 3, "Regulatory": 2, "Virus/Phage": 2, "Coding/NC": 1, "Chromatin Acc.": 1};
+const CAT_ORDER=["Histone Mod.", "Promoters", "Enhancers", "DNA Methyl.", "Splice Sites", "lncRNA", "Mouse Enh.", "TF Binding", "Species Clf.", "Regulatory", "Virus/Phage", "Coding/NC", "Chromatin Acc."];
+const TASKS_URL="./leaderboard_tasks.json";  // per-task scores, lazy-loaded on first open of the "per task" tab
+const CAT_ABBR={"Histone Mod.":"HIST","Promoters":"PROM","Enhancers":"ENH","DNA Methyl.":"METH","Splice Sites":"SPLICE","lncRNA":"lncRNA","Mouse Enh.":"MsENH","TF Binding":"TF","Species Clf.":"SPEC","Regulatory":"REG","Virus/Phage":"VIR","Coding/NC":"COD","Chromatin Acc.":"CHROM"};
+const DATASETS={type:null,task:null};   // type = 13-category view, task = 100-task view
+let TASKS=[];                            // [{id,label,cat}] ordered by category, for task mode
+let mode="type", DATA=null, CATS=[], COLS=[], COLINFO={}, PREFIX="cat_", taskLoading=false, PROV={};
+let regime="full",metric="MCC",size="all",sortKey="macro",sortDir=-1,q="";
+const $=s=>document.querySelector(s);
+
+const STOPS=[[0,[165,0,38]],[.12,[215,48,39]],[.25,[244,109,67]],[.4,[253,174,97]],[.5,[254,224,139]],[.6,[217,239,139]],[.75,[166,217,106]],[.9,[102,189,99]],[1,[26,152,80]]];
+function ramp(t){t=Math.max(0,Math.min(1,t));for(let i=1;i<STOPS.length;i++){if(t<=STOPS[i][0]){const a=STOPS[i-1],b=STOPS[i];const f=(t-a[0])/(b[0]-a[0]);return a[1].map((c,j)=>Math.round(c+(b[1][j]-c)*f));}}return STOPS[STOPS.length-1][1];}
+function txt(c){return (0.299*c[0]+0.587*c[1]+0.114*c[2])>150?"#1c1f1b":"#fff";}
+function cell(v,mn,mx){if(v==null||isNaN(v))return'<span class="cell" style="color:#bbb">&mdash;</span>';const t=(mx===mn)?.5:(v-mn)/(mx-mn);const c=ramp(t);return `<span class="cell" style="background:rgb(${c[0]},${c[1]},${c[2]});color:${txt(c)}">${v.toFixed(3)}</span>`;}
+function fmtP(n){if(!n)return'<span style="color:#bbb">?</span>';let v,u;if(n>=1e9){v=n/1e9;u='B';}else if(n>=1e6){v=n/1e6;u='M';}else{v=n/1e3;u='K';}
+ const s = v>=100 ? Math.round(v).toString() : v>=10 ? (Math.round(v*10)/10).toString() : (Math.round(v*100)/100).toString();
+ return s+'<i>'+u+'</i>';}
+function bin(p){return p<1e8?"s":p<1e9?"m":"l";}
+function badge(p){const map={official:["#ff2d87","Official"],verified:["#1a9850","Verified"],"self-reported":["#9a948a","Self-rep."]};const e=map[p]||map["self-reported"];return `<span class="badge"><span class="bdot" style="background:${e[0]}"></span>${e[1]}</span>`;}
+
+function buildRows(){
+ if(!DATA)return [];
+ let r=(DATA[regime]||[]).map(d=>{const m=META[d.model]||{};
+  const o={model:d.model,disp:d.disp||m.disp||d.model,params:(d.params!=null?d.params:(m.params||0)),prov:PROV[d.model]||(META[d.model]?"official":"self-reported"),macro:d["macro_"+metric],micro:d["micro_"+metric]};
+  const cm=d[PREFIX+metric]||{};COLS.forEach(c=>o[c]=cm[c]);return o;});
+ if(size!=="all")r=r.filter(d=>bin(d.params)===size);
+ if(q)r=r.filter(d=>(d.disp+" "+d.model).toLowerCase().includes(q));
+ r.sort((a,b)=>{const av=a[sortKey],bv=b[sortKey];if(sortKey==="disp"||sortKey==="prov")return av<bv?-sortDir:av>bv?sortDir:0;return((av==null?-9:av)-(bv==null?-9:bv))*sortDir;});
+ return r;}
+
+function render(){
+ if(!DATA)return;
+ const rows=buildRows();
+ let lo=Infinity,hi=-Infinity;
+ rows.forEach(d=>["macro","micro",...COLS].forEach(k=>{if(d[k]!=null&&!isNaN(d[k])){lo=Math.min(lo,d[k]);hi=Math.max(hi,d[k]);}}));
+ if(!isFinite(lo)){lo=0;hi=1;}
+ const cols=[["rank","#"],["disp","Model"],["params","Params"],["prov","Source"],["macro","Macro"],["micro","Micro"]].concat(COLS.map(c=>[c,(COLINFO[c]&&COLINFO[c].label)||c]));
+ $("#head").innerHTML=cols.map(([k,lbl])=>{
+  const ar=sortKey===k?`<span class="ar">${sortDir<0?"\u25BC":"\u25B2"}</span>`:"";
+  const cls=(k==="rank"||k==="disp"||k==="params"||k==="prov")?"l frz":"";
+  const sub=(k==="macro"||k==="micro")?`<span class="n">${metric}</span>`:(COLINFO[k]?`<span class="n">${COLINFO[k].sub}</span>`:"");
+  return `<th class="${cls}" data-k="${k}">${lbl}${ar}${sub}</th>`;}).join("");
+ $("#head").querySelectorAll("th").forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(k===sortKey)sortDir*=-1;else{sortKey=k;sortDir=(k==="disp")?1:-1;}render();});
+ $("#body").innerHTML=rows.map((d,i)=>{
+  const medal=i<3?`<span class="medal" style="background:rgb(${ramp(1).join(',')})"></span>`:"";
+  const cat=COLS.map(c=>`<td>${cell(d[c],lo,hi)}</td>`).join("");
+  return `<tr class="${i===0?'top1':''}">
+   <td class="rank l frz">${i===0?'\u2605':(i+1)}</td>
+   <td class="model l frz"><b>${medal}${d.disp}</b></td>
+   <td class="params l frz">${fmtP(d.params)}</td>
+   <td class="prov l frz">${badge(d.prov)}</td>
+   <td class="hdr">${cell(d.macro,lo,hi)}</td>
+   <td class="hdr">${cell(d.micro,lo,hi)}</td>${cat}</tr>`;}).join("");
+ const sk=(COLINFO[sortKey]&&COLINFO[sortKey].label)||({rank:"#",disp:"Model",params:"Params",prov:"Source",macro:"Macro",micro:"Micro"}[sortKey])||sortKey;
+ $("#meta").textContent=`${rows.length} models · ${regime} · ${metric} · ${mode==="task"?"100 tasks":"13 task types"} · sorted by ${sk} · scale [${lo.toFixed(2)}, ${hi.toFixed(2)}]`;
+ syncFrozen();
+}
+function syncFrozen(){
+ const ths=$("#head").children;
+ if(ths.length<4)return;
+ const w0=ths[0].getBoundingClientRect().width;
+ const w1=ths[1].getBoundingClientRect().width;
+ const w2=ths[2].getBoundingClientRect().width;
+ const t=$("#tbl");
+ t.style.setProperty("--l1", w0+"px");
+ t.style.setProperty("--l2", (w0+w1)+"px");
+ t.style.setProperty("--l3", (w0+w1+w2)+"px");
+}
+window.addEventListener("resize", syncFrozen);
+function seg(id,fn){$("#"+id).querySelectorAll("button").forEach(b=>b.onclick=()=>{$("#"+id).querySelectorAll("button").forEach(x=>x.classList.remove("on"));b.classList.add("on");if(id==="regime")b.classList.add("mag");fn(b.dataset.v);render();});}
+seg("regime",v=>regime=v);seg("metric",v=>metric=v);seg("size",v=>size=v);
+$("#q").oninput=e=>{q=e.target.value.toLowerCase().trim();render();};
+
+function deriveCats(d){const seen=new Set();Object.values(d).flat().forEach(x=>Object.keys(x.cat_MCC||{}).forEach(c=>seen.add(c)));return CAT_ORDER.filter(c=>seen.has(c)).concat([...seen].filter(c=>!CAT_ORDER.includes(c)));}
+function activate(){
+ if(mode==="type"){DATA=DATASETS.type;PREFIX="cat_";COLS=CATS;COLINFO={};CATS.forEach(c=>COLINFO[c]={label:c,sub:"n="+(NCAT[c]||"")});}
+ else{DATA=DATASETS.task;PREFIX="task_";COLS=TASKS.map(t=>t.id);COLINFO={};TASKS.forEach(t=>COLINFO[t.id]={label:t.label,sub:CAT_ABBR[t.cat]||t.cat});}
+ if(!["disp","params","macro","micro"].includes(sortKey)&&!COLS.includes(sortKey)){sortKey="macro";sortDir=-1;}
+ $("#tbl").style.display="";render();
+}
+function applyType(j){
+ DATASETS.type=j.data||j;
+ CATS=deriveCats(DATASETS.type);
+ PROV={};Object.values(DATASETS.type).flat().forEach(r=>{if(!(r.model in PROV))PROV[r.model]=r.submitted||(r.official?"official":"self-reported");});
+ const st=$("#status");if(st)st.style.display="none";
+ if(mode==="type")activate();
+}
+async function loadTasks(){
+ if(taskLoading)return;taskLoading=true;
+ const st=$("#status");$("#tbl").style.display="none";
+ if(st){st.className="status";st.style.display="";st.innerHTML='<span class="spin"></span>Loading per-task scores\u2026';}
+ try{
+  const res=await fetch(TASKS_URL);if(!res.ok)throw new Error("HTTP "+res.status);
+  const j=await res.json();DATASETS.task=j.data;TASKS=j.tasks||[];
+  if(st)st.style.display="none";activate();
+ }catch(e){if(st){st.className="status err";st.innerHTML="Couldn't load per-task scores ("+e.message+").<br><span style='font-weight:500;color:var(--dim)'>It loads automatically on the deployed Space; locally run <code>python3 -m http.server</code>.</span>";}}
+ taskLoading=false;
+}
+$("#tabs").querySelectorAll("button").forEach(b=>b.onclick=()=>{
+ const m=b.dataset.m;if(m===mode)return;
+ $("#tabs").querySelectorAll("button").forEach(x=>x.classList.remove("on"));b.classList.add("on");
+ mode=m;
+ if(m==="task"&&!DATASETS.task)loadTasks();else activate();
+});
+// load the category view from the live results on Hugging Face
+(async function load(){
+ try{
+  const res=await fetch(DATA_URL);
+  if(!res.ok) throw new Error("HTTP "+res.status);
+  applyType(await res.json());
+ }catch(e){
+  const st=$("#status"); st.className="status err";
+  st.innerHTML="Couldn't load results ("+e.message+").<br><span style='font-weight:500;color:var(--dim)'>On the deployed Space this loads automatically. Opening the file locally is blocked by the browser (CORS) \u2014 run <code>python3 -m http.server</code> and open via http://localhost.</span>";
+ }
+})();
+</script></body></html>
