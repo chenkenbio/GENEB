@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://huggingface.co" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--paper:#f7f4ec;--card:#fffdf8;--ink:#1c1f1b;--dim:#7b7a70;--line:#e4ded0;--mag:#ff2d87;--mag-soft:#ffe1ee}
+:root{--paper:#f7f4ec;--card:#fffdf8;--ink:#1c1f1b;--dim:#7b7a70;--line:#e4ded0;--mag:#ff2d87;--mag-soft:#ffe1ee;--grid:rgba(28,31,27,.10);--cross:#ff2d87}
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
 body{background:var(--paper);color:var(--ink);font-family:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
@@ -46,13 +46,21 @@ th.l,td.l{text-align:left}
 th .ar{color:var(--mag);margin-left:3px}
 th .n{display:block;font-size:8px;color:#ffc8df;font-weight:500;letter-spacing:.03em;margin-top:2px}
 /* ---- body cells ---- */
-td{padding:3px;text-align:right;white-space:nowrap;background:var(--card)}
+td{padding:0;text-align:right;white-space:nowrap;background:var(--card)}
 /* equal-width score columns (Macro, Micro, all 13 categories) */
 th:not(.frz){width:120px;text-align:center;white-space:normal;overflow-wrap:anywhere;vertical-align:middle;line-height:1.2}
 td:not(.frz){width:120px;text-align:center}
-/* heatmap tiles */
-.cell{display:block;padding:10px 8px;border-radius:6px;font-variant-numeric:tabular-nums;font-weight:600;letter-spacing:.01em;transition:transform .1s,box-shadow .1s}
-td:hover .cell{transform:scale(1.12);box-shadow:0 3px 10px rgba(28,31,27,.28);position:relative;z-index:1}
+/* heatmap tiles — flush grid, thin dividers, no rounding/zoom */
+td.sc{position:relative;padding:0}
+.cell{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0 8px;
+  font-variant-numeric:tabular-nums;font-weight:600;letter-spacing:.01em;
+  box-shadow:inset -1px 0 0 var(--grid),inset 0 -1px 0 var(--grid)}
+/* crosshair: highlight the hovered row + column without recolouring the heatmap */
+#body tr:hover td.sc::before{content:"";position:absolute;left:0;right:0;top:0;bottom:0;
+  border-top:1.25px solid var(--cross);border-bottom:1.25px solid var(--cross);pointer-events:none;z-index:1}
+td.sc.cx::after{content:"";position:absolute;left:0;right:0;top:0;bottom:0;
+  border-left:1.25px solid var(--cross);border-right:1.25px solid var(--cross);pointer-events:none;z-index:1}
+th.cxh{color:var(--mag)}
 /* ---- frozen left columns (Rank / Model / Params) ---- */
 .frz{position:sticky;z-index:2;background:var(--card)}
 th.frz{z-index:4;background:var(--ink)}
@@ -73,7 +81,7 @@ td.params{padding:11px 12px;font-variant-numeric:tabular-nums;color:var(--ink);f
 td.params i{font-style:normal;color:var(--mag);font-size:10px;margin-left:1px}
 .hdr .cell{font-weight:800}
 /* row separators (subtle, only under frozen text cells so tiles stay clean) */
-td.frz{border-bottom:1px solid var(--line)}
+td.frz{border-bottom:1px solid var(--grid)}
 tbody tr:last-child td.frz{border-bottom:0}
 tbody tr:hover td.frz{background:#f1ebdc}
 tbody tr:hover td.model{color:var(--mag)}
@@ -137,7 +145,9 @@ let regime="full",metric="MCC",size="all",sortKey="macro",sortDir=-1,q="";
 const $=s=>document.querySelector(s);
 
 const STOPS=[[0,[165,0,38]],[.12,[215,48,39]],[.25,[244,109,67]],[.4,[253,174,97]],[.5,[254,224,139]],[.6,[217,239,139]],[.75,[166,217,106]],[.9,[102,189,99]],[1,[26,152,80]]];
-function ramp(t){t=Math.max(0,Math.min(1,t));for(let i=1;i<STOPS.length;i++){if(t<=STOPS[i][0]){const a=STOPS[i-1],b=STOPS[i];const f=(t-a[0])/(b[0]-a[0]);return a[1].map((c,j)=>Math.round(c+(b[1][j]-c)*f));}}return STOPS[STOPS.length-1][1];}
+const MUTE=.22; // soften the heatmap: pull each colour toward its own grey, keeping luminance (so text-contrast logic still holds) and the red→green order
+function mute(c){const L=0.299*c[0]+0.587*c[1]+0.114*c[2];return c.map(x=>Math.round(x+(L-x)*MUTE));}
+function ramp(t){t=Math.max(0,Math.min(1,t));for(let i=1;i<STOPS.length;i++){if(t<=STOPS[i][0]){const a=STOPS[i-1],b=STOPS[i];const f=(t-a[0])/(b[0]-a[0]);return mute(a[1].map((c,j)=>Math.round(c+(b[1][j]-c)*f)));}}return mute(STOPS[STOPS.length-1][1]);}
 function txt(c){return (0.299*c[0]+0.587*c[1]+0.114*c[2])>150?"#1c1f1b":"#fff";}
 function cell(v,mn,mx){if(v==null||isNaN(v))return'<span class="cell" style="color:#bbb">&mdash;</span>';const t=(mx===mn)?.5:(v-mn)/(mx-mn);const c=ramp(t);return `<span class="cell" style="background:rgb(${c[0]},${c[1]},${c[2]});color:${txt(c)}">${v.toFixed(3)}</span>`;}
 function fmtP(n){if(!n)return'<span style="color:#bbb">?</span>';let v,u;if(n>=1e9){v=n/1e9;u='B';}else if(n>=1e6){v=n/1e6;u='M';}else{v=n/1e3;u='K';}
@@ -171,16 +181,17 @@ function render(){
  $("#head").querySelectorAll("th").forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(k===sortKey)sortDir*=-1;else{sortKey=k;sortDir=(k==="disp")?1:-1;}render();});
  $("#body").innerHTML=rows.map((d,i)=>{
   const medal=i<3?`<span class="medal" style="background:rgb(${ramp(1).join(',')})"></span>`:"";
-  const cat=COLS.map(c=>`<td>${cell(d[c],lo,hi)}</td>`).join("");
+  const cat=COLS.map(c=>`<td class="sc">${cell(d[c],lo,hi)}</td>`).join("");
   return `<tr class="${i===0?'top1':''}">
    <td class="rank l frz">${i===0?'\u2605':(i+1)}</td>
    <td class="model l frz"><b>${medal}${d.disp}</b></td>
    <td class="params l frz">${fmtP(d.params)}</td>
    <td class="prov l frz">${badge(d.prov)}</td>
-   <td class="hdr">${cell(d.macro,lo,hi)}</td>
-   <td class="hdr">${cell(d.micro,lo,hi)}</td>${cat}</tr>`;}).join("");
+   <td class="hdr sc">${cell(d.macro,lo,hi)}</td>
+   <td class="hdr sc">${cell(d.micro,lo,hi)}</td>${cat}</tr>`;}).join("");
  const sk=(COLINFO[sortKey]&&COLINFO[sortKey].label)||({rank:"#",disp:"Model",params:"Params",prov:"Source",macro:"Macro",micro:"Micro"}[sortKey])||sortKey;
  $("#meta").textContent=`${rows.length} models · ${regime} · ${metric} · ${mode==="task"?"100 tasks":"13 task types"} · sorted by ${sk} · scale [${lo.toFixed(2)}, ${hi.toFixed(2)}]`;
+ curCol=-1;curColCells=[];curTh=null;
  syncFrozen();
 }
 function syncFrozen(){
@@ -195,9 +206,26 @@ function syncFrozen(){
  t.style.setProperty("--l3", (w0+w1+w2)+"px");
 }
 window.addEventListener("resize", syncFrozen);
+/* --- column crosshair: highlight the hovered column's cells + its header (row is handled in CSS via tr:hover) --- */
+let curCol=-1,curColCells=[],curTh=null;
+function setCol(ci){
+ if(ci===curCol)return;
+ curColCells.forEach(c=>c.classList.remove("cx"));
+ if(curTh)curTh.classList.remove("cxh");
+ curCol=ci;curColCells=[];curTh=null;
+ if(ci<0)return;
+ const body=$("#body");
+ for(const tr of body.rows){const c=tr.cells[ci];if(c&&c.classList.contains("sc")){c.classList.add("cx");curColCells.push(c);}}
+ if(curColCells.length){const th=$("#head").children[ci];if(th){th.classList.add("cxh");curTh=th;}}
+ else curCol=-1; /* hovered a frozen (non-score) column → no column highlight */
+}
+$("#body").addEventListener("mouseover",e=>{const td=e.target.closest("td");setCol(td?td.cellIndex:-1);});
+document.querySelector(".tablewrap").addEventListener("mouseleave",()=>setCol(-1));
 function seg(id,fn){$("#"+id).querySelectorAll("button").forEach(b=>b.onclick=()=>{$("#"+id).querySelectorAll("button").forEach(x=>x.classList.remove("on"));b.classList.add("on");if(id==="regime")b.classList.add("mag");fn(b.dataset.v);render();});}
 seg("regime",v=>regime=v);seg("metric",v=>metric=v);seg("size",v=>size=v);
 $("#q").oninput=e=>{q=e.target.value.toLowerCase().trim();render();};
+/* make the footer legend use the same (muted) scale as the cells */
+(function legend(){const g=document.querySelector(".grad");if(!g)return;const n=24,s=[];for(let i=0;i<=n;i++){const c=ramp(i/n);s.push(`rgb(${c[0]},${c[1]},${c[2]}) ${Math.round(i/n*100)}%`);}g.style.background=`linear-gradient(90deg,${s.join(",")})`;})();
 
 function deriveCats(d){const seen=new Set();Object.values(d).flat().forEach(x=>Object.keys(x.cat_MCC||{}).forEach(c=>seen.add(c)));return CAT_ORDER.filter(c=>seen.has(c)).concat([...seen].filter(c=>!CAT_ORDER.includes(c)));}
 function activate(){
