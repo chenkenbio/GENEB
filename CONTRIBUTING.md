@@ -15,7 +15,23 @@ To add a model to the GENEB leaderboard, you need to provide three things:
 Evaluation runs on your hardware. Model weights and intermediate embeddings remain local;
 the pull request only needs the extractor code, the final metrics, and the model card.
 
-Community entries are marked as `self-reported` in submission metadata after review.
+Externally submitted entries are marked as `self-reported` in submission metadata after review.
+
+---
+
+## Submission workflow
+
+External contributors do not need write access to this repository. Please submit new
+models through the standard fork-and-pull-request workflow:
+
+1. Fork `darlednik/geneb`.
+2. Create a branch in your fork.
+3. Add your extractor, submission file, and model card.
+4. Run local validation.
+5. Open a pull request to `darlednik/geneb:main`.
+
+Submissions are reviewed for schema completeness, protocol consistency, and plausibility
+before being merged into the leaderboard.
 
 ---
 
@@ -133,8 +149,7 @@ A pull request for a new model should include:
 - `harness/extractors/<module>.py` — code used to compute embeddings;
 - `model_cards/<model_id>.md` — model description and training-data notes.
 
-CI validates the submission format and checks that leaderboard generation succeeds. After
-the pull request is merged into `main`, the public Hugging Face Space is updated
+CI validates the submission format and checks that leaderboard generation succeeds. After the pull request is merged into `main`, the public Hugging Face Space is updated
 automatically.
 
 ---
