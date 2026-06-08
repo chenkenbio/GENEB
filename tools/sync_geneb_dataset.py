@@ -27,7 +27,7 @@ import tempfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SPEC_PATH = os.path.join(ROOT, "benchmark", "benchmark_spec.json")
-DEFAULT_REPO = "DeepPavlov/geneb-tasks"
+DEFAULT_REPO = "darlednik/geneb-tasks"
 DEFAULT_TAR = os.path.join(ROOT, "data_dir_all_csvs.tar.gz")
 HF_TASKS_DIR = "tasks"
 PLACEHOLDER_REV = "<PIN_DATASET_COMMIT_SHA>"
@@ -127,15 +127,15 @@ def build_readme_markdown_body(spec) -> list[str]:
         "# GENEB — Genomic Embedding Benchmark (task data)",
         "",
         "Task-level sequence classification data for "
-        "[GENEB](https://github.com/DeepPavlov/geneb): a multi-task benchmark for DNA sequence "
+        "[GENEB](https://github.com/darlednik/geneb): a multi-task benchmark for DNA sequence "
         "encoders evaluated with **precomputed representations and logistic regression** "
         f"(no encoder fine-tuning on task labels) across **{n_tasks} tasks** in "
         f"**{n_cats} functional categories**.",
         "",
         "This repository release contains **train and test partitions only**. Model scores, "
         "evaluation code, and submission artifacts are maintained in the "
-        "[benchmark repository](https://github.com/DeepPavlov/geneb) and summarized on the "
-        "[leaderboard](https://huggingface.co/spaces/DeepPavlov/geneb-leaderboard).",
+        "[benchmark repository](https://github.com/darlednik/geneb) and summarized on the "
+        "[leaderboard](https://huggingface.co/spaces/darlednik/geneb-leaderboard).",
         "",
         "## Record schema",
         "",
@@ -151,7 +151,7 @@ def build_readme_markdown_body(spec) -> list[str]:
         "## Evaluation protocol (summary)",
         "",
         "GENEB scores models on these tasks under a shared protocol (full specification in the "
-        "[benchmark repository](https://github.com/DeepPavlov/geneb/blob/main/benchmark/benchmark_spec.json)):",
+        "[benchmark repository](https://github.com/darlednik/geneb/blob/main/benchmark/benchmark_spec.json)):",
         "",
         f"| Item | Specification |",
         f"|------|----------------|",

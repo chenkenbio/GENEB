@@ -5,9 +5,9 @@ GENEB is a multi-task benchmark for DNA sequence encoders: **100 classification 
 under full-, 10-shot, and 1-shot regimes (reported metrics: MCC, accuracy, macro-F1).
 
 - **Paper:** https://arxiv.org/abs/2606.04525
-- **Source code:** https://github.com/DeepPavlov/geneb
-- **Leaderboard:** https://huggingface.co/spaces/DeepPavlov/geneb-leaderboard
-- **Task data:** https://huggingface.co/datasets/DeepPavlov/geneb-tasks
+- **Source code:** https://github.com/darlednik/geneb
+- **Leaderboard:** https://huggingface.co/spaces/darlednik/geneb-leaderboard
+- **Task data:** https://huggingface.co/datasets/darlednik/geneb-tasks
 - **Submit a model:** [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---

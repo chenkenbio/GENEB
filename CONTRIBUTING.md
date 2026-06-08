@@ -1,9 +1,9 @@
 # Contributing results to GENEB
 
 Paper: https://arxiv.org/abs/2606.04525  
-Repository: https://github.com/DeepPavlov/geneb  
-Task data: https://huggingface.co/datasets/DeepPavlov/geneb-tasks  
-Leaderboard: https://huggingface.co/spaces/DeepPavlov/geneb-leaderboard
+Repository: https://github.com/darlednik/geneb  
+Task data: https://huggingface.co/datasets/darlednik/geneb-tasks  
+Leaderboard: https://huggingface.co/spaces/darlednik/geneb-leaderboard
 
 To add a model to the GENEB leaderboard, you need to provide three things:
 

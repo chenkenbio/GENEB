@@ -32,7 +32,7 @@ jobs:
       - name: Sync to Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}     # add this secret: an HF write token
-          SPACE_ID: DeepPavlov/geneb-leaderboard
+          SPACE_ID: darlednik/geneb-leaderboard
         run: |
           pip install --quiet "huggingface_hub>=0.24"
           python - <<'PY'

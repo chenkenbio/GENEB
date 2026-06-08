@@ -34,8 +34,8 @@
     "note": "Linear probe on precomputed embeddings. Identical train/test splits for every model; see dataset revision below."
   },
   "dataset": {
-    "repo_id": "DeepPavlov/geneb-tasks",
-    "source": "https://huggingface.co/datasets/DeepPavlov/geneb-tasks",
+    "repo_id": "darlednik/geneb-tasks",
+    "source": "https://huggingface.co/datasets/darlednik/geneb-tasks",
     "revision": "4edd705be573e48c585c2cf79dc320f9f43c7b04",
     "layout": "HF: tasks/<task_id>/{train,test}.csv + README configs (subset=task label); harness: flat <task_id>.csv with text,label,split (built by download)"
   },
