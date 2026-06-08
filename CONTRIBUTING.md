@@ -178,7 +178,6 @@ CI does **not** recompute embeddings, retrain probes, or download third-party mo
 
 ## Contact
 
-For questions about submissions, extractor implementation, benchmark protocol, or leaderboard updates, please contact:
+Repository and leaderboard contact: [Daria Ledneva](mailto:a.ledn2026@gmail.com).
 
-**Daria Ledneva**  
-[a.ledn2026@gmail.com](mailto:a.ledn2026@gmail.com)
+Questions, suggestions, feedback, and model submissions are welcome.

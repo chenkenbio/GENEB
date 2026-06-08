@@ -123,3 +123,11 @@ revision are sufficient for another user to repeat the evaluation.
   url           = {https://arxiv.org/abs/2606.04525}
 }
 ```
+
+---
+
+## Contact
+
+Repository and leaderboard contact: [Daria Ledneva](mailto:a.ledn2026@gmail.com).
+
+Questions, suggestions, feedback, and model submissions are welcome.
