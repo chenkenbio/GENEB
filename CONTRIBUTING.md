@@ -158,3 +158,12 @@ CI does **not** recompute embeddings, retrain probes, or download third-party mo
 - Do not train on the test split or perform encoder fine-tuning on task labels beyond the
   defined linear probe.
 - One submission file per model; one pull request per model is easiest to review.
+
+---
+
+## Contact
+
+For questions about submissions, extractor implementation, benchmark protocol, or leaderboard updates, please contact:
+
+**Daria Ledneva**  
+[a.ledn2026@gmail.com](mailto:a.ledn2026@gmail.com)
