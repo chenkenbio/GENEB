@@ -28,7 +28,7 @@
   },
   "caduceus-ps_seqlen-131k_d_model-256_n_layer-16": {
     "display": "Caduceus-PS-131k-256",
-    "params": 1930000,
+    "params": 8000000,
     "url": "",
     "zero_shot": false,
     "training_data": "",
@@ -82,7 +82,7 @@
   },
   "eccdnamamba_weights": {
     "display": "eccdnamamba_weights",
-    "params": 1000000000,
+    "params": 537000000,
     "url": "",
     "zero_shot": false,
     "training_data": "",
@@ -91,7 +91,7 @@
   },
   "enformer-official-rough": {
     "display": "enformer-official-rough",
-    "params": 250000000,
+    "params": 252000000,
     "url": "",
     "zero_shot": false,
     "training_data": "",
