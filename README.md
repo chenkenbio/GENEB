@@ -28,6 +28,11 @@ model, contributors provide a small extractor module that loads their encoder an
 sequence embeddings; the repository stores this code and the resulting metrics, but not
 third-party model weights.
 
+Reference extractors for many leaderboard models live on the [`dev`](https://github.com/darlednik/geneb/tree/dev)
+branch while we polish them for merge to `main`. On `main`, `harness/extractors/` keeps only a
+minimal reference set; if you are eager to reproduce a specific encoder in the meantime, feel
+free to look in `dev`.
+
 ---
 
 ## Repository layout
