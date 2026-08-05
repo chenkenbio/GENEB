@@ -19,6 +19,11 @@ GENEB covers **40 models**, **100 DNA classification tasks**, and **13 functiona
 
 <img width="6961" height="2810" alt="image" src="https://github.com/user-attachments/assets/5fdaefcd-bcf8-4e3f-ab79-c91acc3fd27c" />
 
+> **Reproducing a specific model?** Reference extractors for the leaderboard models live on
+> the [`dev`](https://github.com/darlednik/GENEB/tree/dev) branch. Some of them need
+> model-specific dependencies, so `main` deliberately keeps only a minimal reference set
+> under `harness/extractors/` and `dev` holds the full collection.
+
 ---
 
 ## Using GENEB
@@ -348,8 +353,7 @@ Code in this repository is released under the [Apache License 2.0](LICENSE).
 
 The license covers the harness, tools, benchmark definition, and leaderboard code. It does
 **not** cover third-party model weights, and it does not override the licensing terms of the
-upstream sources from which GENEB tasks are derived — see the
-[task data card](https://huggingface.co/datasets/darlednik/geneb-tasks) for per-source terms.
+upstream sources from which GENEB tasks are derived.
 
 ---
 
