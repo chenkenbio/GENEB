@@ -1,0 +1,56 @@
+cff-version: 1.2.0
+message: "If you use GENEB, please cite the ICML 2026 paper below."
+title: "GENEB: Genomic Embedding Benchmark"
+abstract: >-
+  A benchmark for choosing genomic foundation models. GENEB evaluates frozen
+  representations from 40 genomic foundation models on 100 DNA classification
+  tasks across 13 functional categories, under a single probing protocol, in
+  full-data, 10-shot and 1-shot regimes.
+type: software
+authors:
+  - family-names: Ledneva
+    given-names: Daria
+    email: a.ledn2026@gmail.com
+  - family-names: Nuridinov
+    given-names: Mikhail
+  - family-names: Kuznetsov
+    given-names: Denis
+repository-code: "https://github.com/darlednik/GENEB"
+url: "https://huggingface.co/spaces/darlednik/geneb-leaderboard"
+license: Apache-2.0
+keywords:
+  - genomics
+  - DNA language models
+  - genomic foundation models
+  - benchmark
+  - representation learning
+  - linear probing
+  - few-shot evaluation
+  - bioinformatics
+preferred-citation:
+  type: conference-paper
+  title: "GENEB: Why Genomic Models Are Hard to Compare"
+  authors:
+    - family-names: Ledneva
+      given-names: Daria
+      email: a.ledn2026@gmail.com
+    - family-names: Nuridinov
+      given-names: Mikhail
+    - family-names: Kuznetsov
+      given-names: Denis
+  year: 2026
+  collection-title: "Proceedings of the 43rd International Conference on Machine Learning"
+  collection-type: proceedings
+  volume: 306
+  publisher:
+    name: "PMLR"
+  conference:
+    name: "43rd International Conference on Machine Learning (ICML 2026)"
+    city: Seoul
+    country: KR
+  identifiers:
+    - type: other
+      value: "arXiv:2606.04525"
+      description: "arXiv preprint"
+  url: "https://arxiv.org/abs/2606.04525"
+  notes: "To appear."
