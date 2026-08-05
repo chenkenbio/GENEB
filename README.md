@@ -17,7 +17,7 @@ GENEB covers **40 models**, **100 DNA classification tasks**, and **13 functiona
 🧬 [**Download the benchmark tasks**](https://huggingface.co/datasets/darlednik/geneb-tasks) ·
 ➕ [**Evaluate and submit your model**](CONTRIBUTING.md)
 
-<img width="6961" height="2810" alt="image" src="https://github.com/user-attachments/assets/5fdaefcd-bcf8-4e3f-ab79-c91acc3fd27c" />
+<img width="4406" height="1780" alt="image" src="https://github.com/user-attachments/assets/17deb692-f839-47f1-a2e1-f09068e2c66b" />
 
 > **Reproducing a specific model?** Reference extractors for the leaderboard models live on
 > the [`dev`](https://github.com/darlednik/GENEB/tree/dev) branch. Some of them need
