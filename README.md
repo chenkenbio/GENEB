@@ -1,4 +1,4 @@
-# GENEB — Genomic Embedding Benchmark
+# GENEB: A Benchmark for Choosing Genomic Foundation Models
 
 [![ICML 2026](https://img.shields.io/badge/ICML-2026-1f6feb.svg)](https://arxiv.org/abs/2606.04525)
 [![arXiv](https://img.shields.io/badge/arXiv-2606.04525-b31b1b.svg)](https://arxiv.org/abs/2606.04525)
@@ -6,20 +6,58 @@
 [![Dataset](https://img.shields.io/badge/%F0%9F%A4%97-Task%20data-yellow.svg)](https://huggingface.co/datasets/darlednik/geneb-tasks)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
 
-**40 genomic foundation models. 100 DNA classification tasks. 13 functional categories.
-One unified probing protocol.**
+**GENEB compares genomic foundation models and DNA language models on downstream genomics tasks. The leaderboard is organized by biological task, data regime, and model size, so it can be used to choose a model for a specific setting.**
 
-Progress in genomic foundation models is hard to assess: models are evaluated on disjoint
-benchmarks under incompatible protocols, so claims of superiority are rarely comparable.
-GENEB evaluates frozen representations from 40 models on the full 100-task suite with a
-single linear-probe protocol, in full-, 10-shot, and 1-shot regimes — the role MTEB plays
-in NLP, for genomics.
+GENEB covers **40 models**, **100 DNA classification tasks**, and **13 functional categories**, including promoters, enhancers, histone modifications, DNA methylation, splice sites, and lncRNA. Every model is evaluated with the same frozen-embedding protocol in full-data, 10-shot, and 1-shot settings.
 
-📄 [**Paper: *GENEB: Why Genomic Models Are Hard to Compare*** (ICML 2026)](https://arxiv.org/abs/2606.04525) ·
-🏆 [**Interactive leaderboard**](https://huggingface.co/spaces/darlednik/geneb-leaderboard) ·
-🧬 [**Task data**](https://huggingface.co/datasets/darlednik/geneb-tasks)
+> Model rankings change across biological tasks and data regimes. The overall leaderboard does not identify the best model for every use case.
+
+🏆 [**Open the interactive leaderboard**](https://huggingface.co/spaces/darlednik/geneb-leaderboard) ·
+📄 [**Read the ICML 2026 paper**](https://arxiv.org/abs/2606.04525) ·
+🧬 [**Download the benchmark tasks**](https://huggingface.co/datasets/darlednik/geneb-tasks) ·
+➕ [**Evaluate and submit your model**](CONTRIBUTING.md)
 
 <img width="6961" height="2810" alt="image" src="https://github.com/user-attachments/assets/5fdaefcd-bcf8-4e3f-ab79-c91acc3fd27c" />
+
+---
+
+## Using GENEB
+
+### Choose a model for a downstream task
+
+Use the [interactive leaderboard](https://huggingface.co/spaces/darlednik/geneb-leaderboard) to compare models by:
+
+- biological category or individual task
+- full-data, 10-shot, or 1-shot performance
+- MCC, accuracy, or macro-F1
+- parameter count and compute budget
+
+A model that ranks highly overall may perform poorly on a particular category. The leaderboard therefore reports results at the overall, category, and task levels.
+
+### Compare genomic foundation models under one protocol
+
+Published results often use different datasets, splits, metrics, and fine-tuning procedures. GENEB evaluates all models on the same task suite with the same linear probe over frozen representations.
+
+### Evaluate a new model
+
+The evaluation harness runs locally, so model weights and embeddings do not leave your machine. A submission contains the extractor code, metrics, and a model card.
+
+---
+
+## Benchmark
+
+| | |
+|---|---|
+| Genomic foundation models | 40 |
+| DNA classification tasks | 100 |
+| Functional categories | 13 |
+| Data regimes | full, 10-shot, 1-shot |
+| Primary metric | Matthews correlation coefficient (MCC) |
+| Evaluation | logistic regression on frozen sequence embeddings |
+| Repetitions | 5 random seeds |
+| Outputs | overall, category-level, and task-level rankings |
+
+Use the category-level and task-level tables to choose a model for a specific genomics task.
 
 ---
 
@@ -104,11 +142,12 @@ python3 tools/validate_submission.py submissions/my-model-300m.json
 
 An extractor is a small wrapper that loads your encoder, prepares DNA sequences, computes
 hidden states, applies a pooling strategy, and returns one embedding vector per sequence.
-Full instructions: **[CONTRIBUTING.md](CONTRIBUTING.md)**.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for evaluation and submission instructions.
 
 ---
 
-## Protocol
+## Evaluation protocol
 
 | | |
 |---|---|
