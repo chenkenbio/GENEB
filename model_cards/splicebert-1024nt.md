@@ -12,7 +12,18 @@
 
 Sequences up to 1,024 nt are embedded in one pass. Longer sequences use 1,024-nt windows with a stride of 512 nt. The final window is anchored to the sequence end so every nucleotide is covered, and window embeddings are averaged with equal weight to produce one sequence embedding.
 
-Inference uses CUDA BF16 autocast and PyTorch scaled dot-product attention (SDPA). The GENEB probes use the frozen sequence embeddings produced by this procedure.
+Inference uses PyTorch scaled dot-product attention (SDPA). CUDA devices with BF16 support use BF16 autocast; other CUDA devices and CPU use FP32. The submitted metrics were produced with CUDA BF16. The GENEB probes use the frozen sequence embeddings produced by this procedure.
+
+## Runtime
+
+Install the shared harness requirements and the model-specific dependencies:
+
+```bash
+python -m pip install -r harness/requirements.txt
+python -m pip install "torch==2.7.1" "transformers==4.53.3"
+```
+
+The submitted run used Python 3.11.13, PyTorch 2.7.1+cu128, Transformers 4.53.3, CUDA 12.8, and an NVIDIA RTX 5070 Ti. FP32 fallback requires more GPU memory, so lower `--batch_size` if needed.
 
 ## Training data
 

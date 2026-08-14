@@ -143,8 +143,8 @@ def _masked_mean_pool(hidden: Tensor, attention_mask: Tensor) -> Tensor:
 
 
 def _inference_context(device: torch.device) -> ContextManager[object]:
-    """Return BF16 autocast on CUDA and a no-op context on CPU."""
-    if device.type == "cuda":
+    """Return BF16 autocast when supported and FP32 otherwise."""
+    if device.type == "cuda" and torch.cuda.is_bf16_supported():
         return torch.autocast(device_type="cuda", dtype=torch.bfloat16)
     return nullcontext()
 
